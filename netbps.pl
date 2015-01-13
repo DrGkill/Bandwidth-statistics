@@ -86,7 +86,7 @@ unless(fork()){
 		while(1) {
 			#print $wheel[($iterator%4)];
 			#$iterator == 100000 ? $iterator=1 : $iterator++;
-			usleep(10000);
+			usleep(100000);
 			#print "\b";
 		}
 	}
@@ -106,6 +106,7 @@ else {
 				my $Mbps = $bytes_this_interval / $elapsed_seconds / $unit_value;
 				$start_time = [Time::HiRes::gettimeofday()];
 				printf "%.2f;%.2f\n", $start_time->[0].'.'.$start_time->[1],$Mbps if $display_type eq "detailed";
+				printf "%.2f => %.2f Mbps\n", $start_time->[0].'.'.$start_time->[1],$Mbps if $display_type eq "human";
 				push @data_plot, sprintf("%.2f", $Mbps);
 				$bytes_this_interval = 0;
 	  		}
