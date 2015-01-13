@@ -109,7 +109,7 @@ else {
 				my $Mbps = $bytes_this_interval / $elapsed_seconds / $unit_value;
 				$start_time = [Time::HiRes::gettimeofday()];
 				printf "%.2f;%.2f\n", $start_time->[0].'.'.$start_time->[1],$Mbps if $display_type eq "detailed";
-				printf "%.2f :  %.2f %s\n", $start_time->[0], $start_time->[1],$Mbps if $display_type eq "human";
+				printf "%.2f: %.2f %s\n", $start_time->[0].'.'.$start_time->[1],$Mbps, $unit if $display_type eq "human";
 				push @data_plot, sprintf("%.2f", $Mbps);
 				$bytes_this_interval = 0;
 	  		}
