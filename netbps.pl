@@ -82,13 +82,13 @@ unless(fork()){
 	if (defined $opts{P}){
 		my @wheel=("|", "/", "-", "\\"); 
 		$SIG{'INT'} = sub {kill 'HUP', $tcpdump_pid; print "\nSigInt Caught !\n";};
-		my $iterator = 0;
-		while(1) {
-			print $wheel[($iterator%4)];
-			$iterator == 100000 ? $iterator=1 : $iterator++;
-			usleep(10000);
-			print "\b";
-		}
+		#my $iterator = 0;
+		#while(1) {
+		#	print $wheel[($iterator%4)];
+		#	$iterator == 100000 ? $iterator=1 : $iterator++;
+		#	usleep(10000);
+		#	print "\b";
+		#}
 	}
 	kill 'HUP', $tcpdump_pid;
 }
