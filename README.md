@@ -45,7 +45,7 @@ chmod +x netbps
 
 Run a download bandwidth test :
 ```
-$ ./netbps -r -s http://cdimage.debian.org/debian-cd/7.5.0/amd64/iso-cd/debian-7.5.0-amd64-CD-1.iso -D detailed
+$ ./netbps -d -r http://cdimage.debian.org/debian-cd/7.5.0/amd64/iso-cd/debian-7.5.0-amd64-CD-1.iso -D detailed
 [...]
 1398512914.36;1.44
 1398512914.42;2.02

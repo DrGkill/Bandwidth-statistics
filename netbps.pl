@@ -153,12 +153,13 @@ sub upload {
 sub HELP_MESSAGE {
 	print "Usage:\n
 	netbps --help |--version
-	netbps -u|-d [-I interface] [-p port] [-i report_interval] [-D display_type] <-s server | -r ressource>
+	netbps -u|-d|-P [-I interface] [-p port] [-i report_interval] [-D display_type] <-s server | -r ressource>
         netbps -u|-d -s server
         netbps -u|-d [-p port] [-r ressource] -s server
         netbps -u|-d [-i report interval] -s server\n
  -u  Upload mode (only HTTP PUT method supported for now)
  -d  Download mode (only HTTP download supported for now)
+ -P  Passive mode (Make the traffic goes through the port you want and stalk it)
  -s  Specify a server url for upload
  -p  Specify a port on this server (default 80)
  -r  Specify a file to upload or download 
