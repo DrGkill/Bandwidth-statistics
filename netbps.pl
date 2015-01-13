@@ -47,6 +47,7 @@ my %opts;
 getopts('udPI:p:i:r:s:D:f:',\%opts);  
 
 my $VERSION 		= "0.9";
+$| = 1;
 my $reporting_interval 	= 0.05; # seconds
 my $bytes_this_interval = 0;
 my $ressource 		= "/tmp/ressource.img";
@@ -80,10 +81,11 @@ unless(fork()){
 	
 	if (defined $opts{P}){
 		my @wheel=["|", "/", "-", "\\"]; 
-		$SIG{'INT'} = sub {kill 'HUP', $tcpdump_pid;};
+		$SIG{'INT'} = sub {kill 'HUP', $tcpdump_pid; print "\nSigInt Caught !\n";};
 		my $iterator = 0;
 		while(1) {
-			print $wheel[$iterator%4];
+			print $wheel[($iterator%4)];
+			$iterator == 100000 ? $iterator=1 : $iterator++;
 			usleep(10000);
 			print "\b";
 		}
