@@ -56,6 +56,7 @@ my $interface		= "eth0";
 my $display_type	= "human";
 my $unit		= "MBps";
 my $url			= "";
+my $FLAG		= 0;
 
 HELP_MESSAGE() && exit 1 unless (defined $opts{s} or defined $opts{r} or defined $opts{P});
 
@@ -81,9 +82,10 @@ unless(fork()){
 	
 	if (defined $opts{P}){
 		my @wheel=("|", "/", "-", "\\"); 
-		$SIG{'INT'} = sub {kill 'HUP', $tcpdump_pid; print "\nSigInt Caught !\n";};
+		$SIG{'INT'} = sub {$FLAG = 1};
 		my $iterator = 0;
 		while(1) {
+			last if $FLAG == 1;
 			#print $wheel[($iterator%4)];
 			#$iterator == 100000 ? $iterator=1 : $iterator++;
 			usleep(100000);
@@ -94,6 +96,7 @@ unless(fork()){
 }
 else {
 	waitpid(-1, WNOHANG);
+	$SIG{'INT'} = "IGNORE";
 	my @data_plot = ();
 	my $unit_value = 1048576;
 	$unit_value = 131072 if $unit eq "Mbps";
@@ -106,7 +109,7 @@ else {
 				my $Mbps = $bytes_this_interval / $elapsed_seconds / $unit_value;
 				$start_time = [Time::HiRes::gettimeofday()];
 				printf "%.2f;%.2f\n", $start_time->[0].'.'.$start_time->[1],$Mbps if $display_type eq "detailed";
-				printf "%.2f => %.2f Mbps\n", $start_time->[0].'.'.$start_time->[1],$Mbps if $display_type eq "human";
+				printf "%.2f => %.2f %s\n", $start_time->[0].'.'.$start_time->[1],$Mbps if $display_type eq "human";
 				push @data_plot, sprintf("%.2f", $Mbps);
 				$bytes_this_interval = 0;
 	  		}
