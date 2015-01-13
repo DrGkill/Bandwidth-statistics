@@ -80,7 +80,7 @@ unless(fork()){
 	upload($url, $port, $ressource) if defined $opts{u};
 	
 	if (defined $opts{P}){
-		my @wheel=["|", "/", "-", "\\"]; 
+		my @wheel=("|", "/", "-", "\\"); 
 		$SIG{'INT'} = sub {kill 'HUP', $tcpdump_pid; print "\nSigInt Caught !\n";};
 		my $iterator = 0;
 		while(1) {
