@@ -100,6 +100,8 @@ else {
 	my @data_plot = ();
 	my $unit_value = 1048576;
 	$unit_value = 131072 if $unit eq "Mbps";
+	$unit_value = 1024 if $unit eq "KBps";
+	$unit_value = 128 if $unit eq "KBps";
 	while (<CHLD_OUT>) {
 		if (/ length (\d+):/) {
 			$bytes_this_interval += $1;

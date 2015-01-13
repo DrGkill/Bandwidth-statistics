@@ -79,16 +79,7 @@ $ dd if=/dev/urandom of=/tmp/myressource.img bs=1M count=20
 Then have an HTTP server configured with Webdav methods enabled to accept a PUT on it.
 ```
 $ ./netbps -r /tmp/myressource.img -s http://myserver.com/test.img -D human
-[...]
-1398512915.70;1.31
-1398512915.12;1.32
-1398512915.17;1.31
-1398512915.22;1.33
-1398512915.27;1.23
-1398512915.32;1.29
-1398512915.37;1.34
-1398512915.42;1.30
-[...]
+
 Average : 0.9 MBps
 Std Deviation : 0.20 MBps
 Median : 0.8 MBps
@@ -116,7 +107,7 @@ Usage:
  -i  Specify an interval time between two checkpoint (default 50ms)
  -I  Force output/sniffing interface (default eth0)
  -D  Display type, can be "human", "script", "detailed"
- -f  Unit, can be Mbps or MBps (default MBps)
+ -f  Unit, can be Kbps, KBps, Mbps, MBps (default MBps)
  --help Display this help message
  --version Show script version
 ```
