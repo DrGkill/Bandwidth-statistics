@@ -38,13 +38,13 @@ use LWP::UserAgent;
 use HTTP::Request;
 use File::Slurp;
 use POSIX ":sys_wait_h";
-use Time::HiRes;
+use Time::HiRes qw(usleep);
 use IPC::Open2;
 use Statistics::Basic qw(:all);
 use List::Util qw(first max min reduce sum);
 
 my %opts;
-getopts('udI:p:i:r:s:D:f:',\%opts);  
+getopts('udPI:p:i:r:s:D:f:',\%opts);  
 
 my $VERSION 		= "0.9";
 my $reporting_interval 	= 0.05; # seconds
@@ -56,13 +56,13 @@ my $display_type	= "human";
 my $unit		= "MBps";
 my $url			= "";
 
-HELP_MESSAGE() && exit 1 unless (defined $opts{s} or defined $opts{r});
+HELP_MESSAGE() && exit 1 unless (defined $opts{s} or defined $opts{r} or defined $opts{P});
 
 $reporting_interval 	= $opts{i} if defined $opts{i};
 $ressource		= $opts{r} if defined $opts{r};
 $port			= $opts{p} if defined $opts{p};
 $interface		= $opts{I} if defined $opts{I};
-$display_type		= $opts{D} if defined $opts{D};
+$display_type	= $opts{D} if defined $opts{D};
 $unit			= $opts{f} if defined $opts{f};
 $url			= $opts{s};
 
@@ -77,6 +77,17 @@ my $tcpdump_pid = open2(\*CHLD_OUT, \*CHLD_IN, 'tcpdump', '-i', $interface, '-l'
 unless(fork()){
 	getstore($ressource, "/dev/null") if defined $opts{d};
 	upload($url, $port, $ressource) if defined $opts{u};
+	
+	if (defined $opts{P}){
+		my @wheel=["|", "/", "-", "\\"]; 
+		$SIG{'INT'} = sub {kill 'HUP', $tcpdump_pid;};
+		my $iterator = 0;
+		while(1) {
+			print $wheel[$iterator%4];
+			usleep(10000);
+			print "\b";
+		}
+	}
 	kill 'HUP', $tcpdump_pid;
 }
 else {
