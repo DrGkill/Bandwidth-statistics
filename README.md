@@ -4,9 +4,9 @@ Bandwidth-statistics
 Table of Contents:
 ------------------
 
-* [Introduction] (#intro)
-* [Install] (#install)
-* [Running the script] (#running)
+* [Introduction](#intro)
+* [Install](#install)
+* [Running the script](#running)
 
 <a name="intro"></a>
 ### Introduction
@@ -108,6 +108,7 @@ Usage:
  -I  Force output/sniffing interface (default eth0)
  -D  Display type, can be "human", "script", "detailed"
  -f  Unit, can be Kbps, KBps, Mbps, MBps (default MBps)
+ -t  Snaplen, the capture size of tcpdump (default 94 bytes)
  --help Display this help message
  --version Show script version
 ```

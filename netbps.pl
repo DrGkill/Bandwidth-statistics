@@ -44,7 +44,7 @@ use Statistics::Basic qw(:all);
 use List::Util qw(first max min reduce sum);
 
 my %opts;
-getopts('udPI:p:i:r:s:D:f:',\%opts);  
+getopts('udPI:p:i:r:s:D:f:t:',\%opts);  
 
 my $VERSION 		= "0.9";
 $| = 1;
@@ -56,6 +56,7 @@ my $interface		= "eth0";
 my $display_type	= "human";
 my $unit		= "MBps";
 my $url			= "";
+my $snaplen     = 94;
 my $FLAG		= 0;
 
 HELP_MESSAGE() && exit 1 unless (defined $opts{s} or defined $opts{r} or defined $opts{P});
@@ -66,13 +67,16 @@ $port			= $opts{p} if defined $opts{p};
 $interface		= $opts{I} if defined $opts{I};
 $display_type	= $opts{D} if defined $opts{D};
 $unit			= $opts{f} if defined $opts{f};
+$snaplen        = $opts{t} if defined $opts{t};
 $url			= $opts{s};
+
+my @tdump_final = ['-i', $interface, '-l', '-e', '-n', 'port', $port];
 
 #print Dumper(\%opts);
 
 my $start_time = [Time::HiRes::gettimeofday()];
 
-my $tcpdump_pid = open2(\*CHLD_OUT, \*CHLD_IN, 'tcpdump', '-i', $interface, '-l', '-e', '-n', 'port', $port);
+my $tcpdump_pid = open2(\*CHLD_OUT, \*CHLD_IN, 'tcpdump', '-i', $interface, '-l', '-e', '-n', '-s', $snaplen,'port', $port);
 
 #select(undef, undef, undef, 0.1);
 
@@ -171,6 +175,7 @@ sub HELP_MESSAGE {
  -I  Force output/sniffing interface (default eth0)
  -D  Display type, can be \"human\", \"script\", \"detailed\"
  -f  Unit, can be Mbps or MBps (default MBps)
+ -t  Snaplen, the capture size of tcpdump (default 94 bytes)
  --help Display this help message
  --version Show script version\n";
 	exit 1;
